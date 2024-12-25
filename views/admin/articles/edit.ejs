@@ -1,0 +1,67 @@
+<%- include("../../partials/header")%>
+<%- include("../../partials/navbar")%>
+
+<div class="container">
+    <hr>
+    <div class="card">
+        <div class="card-header">
+            <h2>Editar Artigo</h2>
+        </div>
+
+        <div class="card-body">
+            <form method="POST" action="/articles/update">
+                <input class="form-control" type="text" name="title" value="<%=article.title%>" >
+                <br>
+                <label class="">Artigos</label>
+                <select name="category" class="form-control">
+                    <% categories.forEach((category) => { %>
+                        <% if(category.id == article.categoryId) { %> 
+                            <option value="<%= category.id%>" selected ><%= category.title %></option>
+                        <% } else { %>
+                            <option value="<%= category.id %>"><%= category.title %></option>
+                        <% } %>   
+                    <% }) %>
+                </select>
+                <br>
+               <textarea id="article" class="form-control" name="body" classs="form-control" placeholder="Escreva o artigo aqui"></textarea>
+               <br> 
+                <input type="hidden" name="id" value="<%= article.id %>">
+                <button class="btn btn-danger">Atualizar Artigo</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="content" style="display: none">
+
+    <%-article.body%>
+
+</div>
+
+<%- include("../../partials/footer")%>
+<script src="/tinymce/tinymce.min.js"></script>
+<script>
+
+    tinymce.init({
+        language: "pt_BR",
+        selector: "#article",
+        plugins: [
+          // Core editing features
+          'save', 'preview', 'fullscreen','anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+          // Your account includes a free trial of TinyMCE premium features
+          // Try the most popular premium features until Jan 5, 2025:
+          'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown','importword', 'exportword', 'exportpdf'
+        ],
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+        mergetags_list: [
+          { value: 'First.Name', title: 'First Name' },
+          { value: 'Email', title: 'Email' },
+        ],
+        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+        init_instance_callback:() =>{
+            tinymce.get("article").setContent($("#content").html())
+        }
+    })
+
+</script>
