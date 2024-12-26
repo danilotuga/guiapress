@@ -5,10 +5,14 @@ const bodyParser = require("body-parser")
 const connection = require("./database/database")
 const categoriesController = require("./categories/categoriesController")
 const articlesController = require("./articles/articlesController")
+const userController = require("./users/userController")
+
+
 
 //Controladores de Artigos e Categorias
 const Article = require("./articles/article")
 const Category = require("./categories/Category")
+const User =require("./users/User")
 
 //para aceitar arquivos estaticos
 app.use(express.static('public'))
@@ -20,6 +24,9 @@ app.use(bodyParser.json())
 //Rotas para Controllers Categoria e Artigos
 app.use("/",categoriesController)
 app.use("/",articlesController)
+app.use("/", userController)
+//app.use("/",usersController)
+
 
 
 
